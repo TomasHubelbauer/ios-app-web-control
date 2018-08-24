@@ -14,18 +14,21 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        controlWebView.navigationDelegate = self
+            
         let directoryUrl = Bundle.main.bundleURL.appendingPathComponent("web-control")
         let indexHtmlFileUrl = directoryUrl.appendingPathComponent("index.html")
-        controlWebView.navigationDelegate = self
         controlWebView.loadFileURL(indexHtmlFileUrl, allowingReadAccessTo: directoryUrl)
+        
         guard RTCInitializeSSL() else {
             showError("Failed to init WebRTC")
             return
         }
+        
+        configuration.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
     }
     
     func initiateCommunication() {
-        configuration.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
         peerConnection = peerConnectionFactory.peerConnection(with: configuration, constraints: constraints, delegate: self)
         dataChannel = peerConnection!.dataChannel(forLabel: "WebControl", configuration: RTCDataChannelConfiguration())
         dataChannel!.delegate = self
@@ -54,10 +57,20 @@ class ViewController: UIViewController {
     }
 }
 
-// controlWebView
-extension ViewController: WKNavigationDelegate {
+// controlWebView WKNavigationDelegate, WKScriptMessageHandler
+extension ViewController: WKNavigationDelegate, WKScriptMessageHandler {
+    override func loadView() {
+        super.loadView()
+        controlWebView.configuration.userContentController.add(self, name: "scriptHandler")
+    }
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        print(#function)
         initiateCommunication()
+    }
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        print(#function, message)
     }
 }
 
