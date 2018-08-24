@@ -28,11 +28,14 @@ window.addEventListener('load', _ => {
         report('icegatheringstatechange', peerConnection.iceGatheringState);
     });
 
-    peerConnection.addEventListener('negotiationneeded', event => {
-        report('negotiationneeded');
+    peerConnection.addEventListener('negotiationneeded', async _event => {
+        console.log('negotiationneeded');
+        const peerConnection = new RTCPeerConnection();
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
     });
 
-    peerConnection.addEventListener('signalingstatechange', event => {
+    peerConnection.addEventListener('signalingstatechange', _event => {
         report('signalingstatechange', peerConnection.signalingState);
     });
 
@@ -46,11 +49,11 @@ window.addEventListener('load', _ => {
 
     dataChannel = peerConnection.createDataChannel('Channel');
 
-    dataChannel.addEventListener('bufferedamountlow', event => {
+    dataChannel.addEventListener('bufferedamountlow', _event => {
         report('bufferedamountlow', dataChannel.bufferedAmount, dataChannel.bufferedAmountLowThreshold);
     });
 
-    dataChannel.addEventListener('close', event => {
+    dataChannel.addEventListener('close', _event => {
         report('close');
     });
 
@@ -62,7 +65,7 @@ window.addEventListener('load', _ => {
         report('message', event.data, event.origin, event.ports, event.source);
     });
 
-    dataChannel.addEventListener('open', event => {
+    dataChannel.addEventListener('open', _event => {
         report('open');
     });
 });
