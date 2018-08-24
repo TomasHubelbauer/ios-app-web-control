@@ -1,4 +1,6 @@
-https://github.com/github/gitignore/blob/master/Global/Xcode.gitignore
+.DS_Store
+
+# https://github.com/github/gitignore/blob/master/Global/Xcode.gitignore
 
 # Xcode
 #

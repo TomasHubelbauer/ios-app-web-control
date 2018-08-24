@@ -13,6 +13,7 @@
 		E2520A5221308264004321DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2520A5121308264004321DA /* Assets.xcassets */; };
 		E2520A5521308264004321DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2520A5321308264004321DA /* LaunchScreen.storyboard */; };
 		E2520A5E213084AB004321DA /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2520A5D213084AB004321DA /* WebKit.framework */; };
+		E2520A60213086FB004321DA /* web-control in Resources */ = {isa = PBXBuildFile; fileRef = E2520A5F213086FB004321DA /* web-control */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		E2520A5421308264004321DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E2520A5621308264004321DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2520A5D213084AB004321DA /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		E2520A5F213086FB004321DA /* web-control */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "web-control"; path = "../../web-control"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		E2520A4921308263004321DA /* ios-app-web-control */ = {
 			isa = PBXGroup;
 			children = (
+				E2520A5F213086FB004321DA /* web-control */,
 				E2520A4A21308263004321DA /* AppDelegate.swift */,
 				E2520A4C21308263004321DA /* ViewController.swift */,
 				E2520A4E21308263004321DA /* Main.storyboard */,
@@ -137,6 +140,7 @@
 				E2520A5521308264004321DA /* LaunchScreen.storyboard in Resources */,
 				E2520A5221308264004321DA /* Assets.xcassets in Resources */,
 				E2520A5021308263004321DA /* Main.storyboard in Resources */,
+				E2520A60213086FB004321DA /* web-control in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
