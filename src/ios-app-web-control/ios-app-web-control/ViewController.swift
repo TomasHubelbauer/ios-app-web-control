@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import WebRTC
 
 class ViewController: UIViewController {
     @IBOutlet weak var contentTextField: UITextField!
@@ -10,5 +11,6 @@ class ViewController: UIViewController {
         let directoryUrl = Bundle.main.bundleURL.appendingPathComponent("web-control")
         let indexHtmlFileUrl = directoryUrl.appendingPathComponent("index.html")
         controlWebView.loadFileURL(indexHtmlFileUrl, allowingReadAccessTo: directoryUrl)
+        print(RTCInitializeSSL())
     }
 }

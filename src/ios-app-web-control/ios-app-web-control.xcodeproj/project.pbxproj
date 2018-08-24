@@ -14,6 +14,7 @@
 		E2520A5521308264004321DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2520A5321308264004321DA /* LaunchScreen.storyboard */; };
 		E2520A5E213084AB004321DA /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2520A5D213084AB004321DA /* WebKit.framework */; };
 		E2520A60213086FB004321DA /* web-control in Resources */ = {isa = PBXBuildFile; fileRef = E2520A5F213086FB004321DA /* web-control */; };
+		E2520A6321308E33004321DA /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2520A6221308E33004321DA /* WebRTC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		E2520A5621308264004321DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2520A5D213084AB004321DA /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E2520A5F213086FB004321DA /* web-control */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "web-control"; path = "../../web-control"; sourceTree = "<group>"; };
+		E2520A6221308E33004321DA /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = Carthage/Build/iOS/WebRTC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +36,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2520A5E213084AB004321DA /* WebKit.framework in Frameworks */,
+				E2520A6321308E33004321DA /* WebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +77,7 @@
 		E2520A5C213084AB004321DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E2520A6221308E33004321DA /* WebRTC.framework */,
 				E2520A5D213084AB004321DA /* WebKit.framework */,
 			);
 			name = Frameworks;
@@ -89,6 +93,7 @@
 				E2520A4321308263004321DA /* Sources */,
 				E2520A4421308263004321DA /* Frameworks */,
 				E2520A4521308263004321DA /* Resources */,
+				E2520A6121308DDC004321DA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -145,6 +150,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E2520A6121308DDC004321DA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/WebRTC.framework",
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/WebRTC.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E2520A4321308263004321DA /* Sources */ = {
@@ -298,6 +321,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D8ATRFH5N2;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "ios-app-web-control/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -316,6 +344,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D8ATRFH5N2;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "ios-app-web-control/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
