@@ -98,24 +98,6 @@ extension ViewController: RTCPeerConnectionDelegate {
     
     func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {
         print(#function)
-        peerConnection.offer(for: constraints) { (sessionDescription, error) in
-            guard error == nil else {
-                self.showError("Failed at offer")
-                return
-            }
-            
-            guard let sessionDescription = sessionDescription else {
-                self.showError("Failed at offer session description")
-                return
-            }
-            
-            peerConnection.setLocalDescription(sessionDescription, completionHandler: { (error) in
-                guard error == nil else {
-                    self.showError("Failed at offer local description")
-                    return
-                }
-            })
-        }
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {

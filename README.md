@@ -28,45 +28,24 @@ TypeScript source maps are not provided yet.
 
 ### Flow
 
-1. The user decides to use the web control functionality
-2. The user navigates to the web control menu in the mobile app
-3. The mobile app prompts the user to visit the web app
-    - It also intiates a peer connection and a data channel
-    - It also starts scanning for the offer and candidates
-    - Either it already gathers candidates here and rotates them...
-4. The web app initiates a peer connection and data channel, makes an offer and displays it
-    - it also starts scanning for the answer and candidates
-5. The web app gathers candidates and rotates the offer and candidates codes
+1. The user decides to use web control, clicks Web Control in the mobile app and the mobile app shows the web app URL to visit
+    - Currently for simplification, a web view is shown in the mobile app and direct communication is used between the apps
+    - In the future, the actual web app will be run in a browser on a laptop and the communication will go over the QR channel
+    - The mobile app, upon clicking Web Control, creates a peer connection and a data channel (without offer or answer)
+    - The mobile app starts listening for messages from the web app (for now direct communication, in the future a QR channel)
+2. The web application is opened and it initiates a peer connection and a data channel and waits for negotiation request
+3. The web app requires negotiation and creates an offer, then sets it as its local description and sends its SDP to the mobile app
+    - The web app also starts listening for messages from the mobile app immediately after startup (now direct, future QR channel)
+    - The web app will start generating candidates at this point and sending them to the mobile app as messages too
+4. The mobile app receives the offer SDP message and sets it as its remote description or candidate and adds it to its connection
+    - The mobile app creates an answer to the offer message and sets it as its local description, then sends its SDP to the web app
+    - The mobile app will start gathering ICE candidates at this point and sending them to the web app as messages
+5. The web app receives the answer SDP message and sets it as its remote description or candidate and adds it to its connection
+    - Maybe creation of a pranswer is needed here?
+6. At this point the data channel should open at both ends
 
-At step 5 or 6 the mobile application may notice an offer or a candidate code.
+In the future the web application may be changed to be able to act as a peer (offerer or answered)
+so that web applications can interconnect with any other and all have the ability to offer first.
 
-In case of a candidate, it is added to the mobile application's peer connection.
-
-In case of an offer (only the first time it is seen):
-
-1. The mobile application adds the offer as its remote description
-2. The mobile application creates an answer
-    - In case candidates are only being gathered here, it starts rotating them
-    - It display the answer
-
-At this point the web app is rotating its candidates and its offer
-and the mobile app is rotating its candidates and its answer.
-
-The web application may notice the mobile applications candidates or answer.
-
-In case of a candidate, it is added to the web application's peer connection.
-
-In case of an answer (only the first time it is seen):
-
-1. The web application add the answer as its remote description
-2. The web application creates a pranswer (needed?)
-
-At this point the data channel should open at both ends.
-
-In the future the web application may be changed to be able to act as a peer
-(offerer or answered) so that web applications can interconnect with any
-acting as the first offered.
-
-The mobile application will always be an answered only, because the web
-application doesn't benefit from the mobile one being used as a remote control.
-(Or does it?)
+The mobile application will always be an answered only, because the web application doesn't benefit
+from the mobile one being used as a remote control. (Or does it?)

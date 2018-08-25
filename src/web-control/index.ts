@@ -1,6 +1,22 @@
 let peerConnection: RTCPeerConnection;
 let dataChannel: RTCDataChannel;
 
+type Message = {
+    type: string;
+    [key: string]: string | number | boolean | Message;
+};
+
+interface Window {
+    webkit: {
+        messageHandlers: {
+            // This comes from the name set up in the Swift code
+            scriptHandler: {
+                postMessage: (message: Message) => void;
+            }
+        }
+    }
+}
+
 window.addEventListener('load', _ => {
     peerConnection = new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }] });
 
@@ -29,9 +45,12 @@ window.addEventListener('load', _ => {
     });
 
     peerConnection.addEventListener('negotiationneeded', async _event => {
-        console.log('negotiationneeded');
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
+        window.webkit.messageHandlers.scriptHandler.postMessage({
+            type: 'offer',
+            sdp: offer.sdp
+        });
     });
 
     peerConnection.addEventListener('signalingstatechange', _event => {
@@ -68,8 +87,6 @@ window.addEventListener('load', _ => {
         report('open');
     });
 });
-
-// window.webkit.messageHandlers.scriptHandler.postMessage({ type: 'load' });
 
 function report(name: string, ...args: any[]) {
     const messageP = document.createElement('p');
