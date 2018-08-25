@@ -22,7 +22,7 @@ A demonstration of using WebRTC to achieve communication between an iOS applicat
 ## Debugging
 
 - Mobile application: XCode
-- Web application: Safari > Develop > My iPhone > ...
+- Web application: Safari > Develop > My iPhone > …
 
 TypeScript source maps are not provided yet.
 
@@ -41,8 +41,9 @@ TypeScript source maps are not provided yet.
     - The mobile app creates an answer to the offer message and sets it as its local description, then sends its SDP to the web app
     - The mobile app will start gathering ICE candidates at this point and sending them to the web app as messages
 5. The web app receives the answer SDP message and sets it as its remote description or candidate and adds it to its connection
-    - Maybe creation of a pranswer is needed here?
-6. At this point the data channel should open at both ends
+6. At some point the data channels open at both ends
+
+In direct communication, trickle ICE is near instant, in QR communication, it will be down to the rotation of SDP and ICE codes.
 
 In the future the web application may be changed to be able to act as a peer (offerer or answered)
 so that web applications can interconnect with any other and all have the ability to offer first.
