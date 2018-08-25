@@ -2,17 +2,29 @@
 
 A demonstration of using WebRTC to achieve communication between an iOS application and a web page.
 
-Uses [Carthage](https://github.com/Carthage/Carthage) for managing dependencies.
+## Configuring
 
-Depends on an [unofficial build of WebRTC by Anakros](https://github.com/Anakros/WebRTC).
+- Install [Carthage](https://github.com/Carthage/Carthage) for managing Swift dependencies
+- Install [TypeScript](https://www.typescriptlang.org/) for converting TypeScript to JavaScript
+
+### Dependencies
+
+- An [unofficial build of WebRTC by Anakros](https://github.com/Anakros/WebRTC)
+- TypeScript for converting TypeScript to JavaScript in the web application
 
 ## Running
 
-XCode
+- Mobile application: XCode
+- Web application:
+    - `cd src/web-control`
+    - `tsc -p . -w`
 
 ## Debugging
 
-Safari > Develop > My iPhone > ...
+- Mobile application: XCode
+- Web application: Safari > Develop > My iPhone > ...
+
+TypeScript source maps are not provided yet.
 
 ### Flow
 
