@@ -1,5 +1,5 @@
-let peerConnection;
-let dataChannel;
+let peerConnection: RTCPeerConnection;
+let dataChannel: RTCDataChannel;
 
 window.addEventListener('load', _ => {
     peerConnection = new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }] });
@@ -30,7 +30,6 @@ window.addEventListener('load', _ => {
 
     peerConnection.addEventListener('negotiationneeded', async _event => {
         console.log('negotiationneeded');
-        const peerConnection = new RTCPeerConnection();
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
     });
@@ -72,13 +71,13 @@ window.addEventListener('load', _ => {
 
 // window.webkit.messageHandlers.scriptHandler.postMessage({ type: 'load' });
 
-function report(name, ...args) {
+function report(name: string, ...args: any[]) {
     const messageP = document.createElement('p');
     messageP.textContent = name + ' ' + JSON.stringify(args);
     document.body.appendChild(messageP);
 }
 
-function receiveCandidate(a, b) {
+function receiveCandidate(_a: any, _b: any) {
     const candidateP = document.createElement('p');
     candidateP.textContent = 'candidate';
     document.body.appendChild(candidateP);
