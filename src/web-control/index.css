@@ -1,3 +1,8 @@
 body {
     background: silver;
 }
+
+input {
+    /* Prevent Safari zoom on small fonts */
+    font-size: 16px;
+}

@@ -1,5 +1,6 @@
 let peerConnection: RTCPeerConnection;
 let dataChannel: RTCDataChannel;
+let dataChannelTheirs: RTCDataChannel;
 
 type Message = {
     type: string;
@@ -18,6 +19,8 @@ interface Window {
 }
 
 window.addEventListener('load', _ => {
+    const contentInput = document.querySelector<HTMLInputElement>('#contentInput');
+
     peerConnection = new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }] });
 
     peerConnection.addEventListener('connectionstatechange', _event => {
@@ -25,11 +28,41 @@ window.addEventListener('load', _ => {
     });
 
     peerConnection.addEventListener('datachannel', event => {
-        report('datachannel', event.channel);
+        report('datachannel', event.channel.label);
+        dataChannelTheirs = event.channel;
+
+        event.channel.addEventListener('bufferedamountlow', _event => {
+            report('bufferedamountlow theirs', event.channel.bufferedAmount, event.channel.bufferedAmountLowThreshold);
+        });
+
+        event.channel.addEventListener('close', _event => {
+            report('close theirs');
+        });
+
+        event.channel.addEventListener('error', event => {
+            report('error theirs', event.error);
+        });
+
+        event.channel.addEventListener('message', event => {
+            report('message theirs', event.data, event.origin, event.ports, event.source);
+        });
+
+        event.channel.addEventListener('open', _event => {
+            report('open theirs', event.channel.label);
+        });
     });
 
     peerConnection.addEventListener('icecandidate', event => {
-        report('icecandidate', event.candidate, event.url);
+        if (event.candidate === null) {
+            return;
+        }
+
+        window.webkit.messageHandlers.scriptHandler.postMessage({
+            type: 'candidate',
+            sdp: event.candidate.candidate,
+            sdpMid: event.candidate.sdpMid,
+            sdpMLineIndex: event.candidate.sdpMLineIndex.toString(),
+        });
     });
 
     peerConnection.addEventListener('icecandidateerror', event => {
@@ -49,7 +82,7 @@ window.addEventListener('load', _ => {
         await peerConnection.setLocalDescription(offer);
         window.webkit.messageHandlers.scriptHandler.postMessage({
             type: 'offer',
-            sdp: offer.sdp
+            sdp: offer.sdp,
         });
     });
 
@@ -65,7 +98,7 @@ window.addEventListener('load', _ => {
         report('statsended', event.receiver, event.streams, event.track, event.transceiver);
     });
 
-    dataChannel = peerConnection.createDataChannel('Channel');
+    dataChannel = peerConnection.createDataChannel('WebChannel');
 
     dataChannel.addEventListener('bufferedamountlow', _event => {
         report('bufferedamountlow', dataChannel.bufferedAmount, dataChannel.bufferedAmountLowThreshold);
@@ -80,22 +113,37 @@ window.addEventListener('load', _ => {
     });
 
     dataChannel.addEventListener('message', event => {
-        report('message', event.data, event.origin, event.ports, event.source);
+        report('message mine', event.data, event.origin, event.ports, event.source);
+        contentInput.value = event.data;
     });
 
     dataChannel.addEventListener('open', _event => {
-        report('open');
+        report('open', dataChannel.label);
+    });
+
+    contentInput.addEventListener('input', _event => {
+        if (dataChannel) {
+            dataChannel.send(contentInput.value);
+        }
+
+        if (dataChannelTheirs) {
+            //dataChannelTheirs.send(contentInput.value);
+        }
     });
 });
+
+async function receiveAnswer(sdp: string) {
+    const sessionDescription = new RTCSessionDescription({ type: 'answer', sdp });
+    await peerConnection.setRemoteDescription(sessionDescription);
+}
+
+async function receiveCandidate(sdp: string, sdpMLineIndex: string, sdpMid: string) {
+    const candidate = new RTCIceCandidate({ candidate: sdp, sdpMLineIndex: Number(sdpMLineIndex), sdpMid });
+    await peerConnection.addIceCandidate(candidate);
+}
 
 function report(name: string, ...args: any[]) {
     const messageP = document.createElement('p');
     messageP.textContent = name + ' ' + JSON.stringify(args);
     document.body.appendChild(messageP);
-}
-
-function receiveCandidate(_a: any, _b: any) {
-    const candidateP = document.createElement('p');
-    candidateP.textContent = 'candidate';
-    document.body.appendChild(candidateP);
 }
