@@ -22,9 +22,7 @@ A demonstration of using WebRTC to achieve communication between an iOS applicat
 ## Debugging
 
 - Mobile application: XCode
-- Web application: Safari > Develop > My iPhone > …
-
-TypeScript source maps are not provided yet.
+- Web application: Safari > Develop > My iPhone > … (TypeScript source maps are provided)
 
 ### Flow
 
