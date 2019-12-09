@@ -48,3 +48,15 @@ so that web applications can interconnect with any other and all have the abilit
 
 The mobile application will always be an answered only, because the web application doesn't benefit
 from the mobile one being used as a remote control. (Or does it?)
+
+## To-Do
+
+### Implement the QR channel
+
+First, keep the web view but hide audit logs (so they are reachable using a button) and split the screen into two equal parts, one for mobile code and one for web code.
+
+Second, actually pull the web site out and verify the QR channel still works.
+
+### Introduce and audio log view
+
+In both the mobile app (replacing the alerts) and the web app
